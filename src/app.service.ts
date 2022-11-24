@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
 
 @Injectable()
 export class AppService {
-  getHello(user: User) {
+  getHello() {
     return 'hello World';
   }
 }
