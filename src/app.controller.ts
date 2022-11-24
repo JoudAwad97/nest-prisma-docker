@@ -11,7 +11,7 @@ export class AppController {
   ) {}
 
   @Get()
-  async getHello(): Promise<User> {
+  async getHello(): Promise<string> {
     const random = Math.round(Math.random() * 10e7);
     const user = await this.prismaService.user.create({
       data: {
