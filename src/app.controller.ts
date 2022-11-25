@@ -12,6 +12,6 @@ export class AppController {
   @Get()
   async getHello(): Promise<string> {
     const random = Math.floor(Math.random() * 10e7);
-    return 'Hello World';
+    return 'Hello World ' + process.env.DATABASE_URL;
   }
 }
