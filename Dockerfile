@@ -20,10 +20,13 @@ FROM node:16.13.2-alpine
 WORKDIR /prisma-api
 ENV NODE_ENV=production
 
+COPY --from=BUILD_IMAGE /prisma-api/dist ./dist
+COPY ["package.json", "yarn.lock", "./"]
+
 RUN yarn install --production
 
-COPY --from=BUILD_IMAGE /prisma-api/package.json ./
-COPY --from=BUILD_IMAGE /prisma-api/dist ./dist
+# Schema and Migrations
+COPY prisma ./prisma
 
 EXPOSE 5000
 
