@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION: us-west-2
+  AWS_REGION: us-east-2
   ECR_REGISTRY: 443338647997.dkr.ecr.us-east-2.amazonaws.com
   IMAGE_NAME: prisma-nest-api
   IMAGE_STABLE_TAG: uat
@@ -31,10 +31,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Pull previous Docker image
-        run: docker pull ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} || true
+        run: docker pull ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }} || true
 
       - name: Build new Docker image
-        run: docker build --tag ${{ env.IMAGE_NAME }} --cache-from ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} .
+        run: docker build --tag ${{ env.IMAGE_NAME }} --cache-from ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }} .
 
       - name: Push to ECR
         id: ecr
@@ -43,5 +43,5 @@ jobs:
           access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           region: ${{ env.AWS_REGION }}
-          local-image: ${{ env.IMAGE_NAME }}
-          image: ${{ env.IMAGE_NAME }}, ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          local-image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }}
+          image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }}, ${{ env.IMAGE_NAME }}:${{ github.sha }}
