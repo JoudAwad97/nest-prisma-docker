@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AppService {
-  getHello() {
-    return 'DATABASE_URL:' + process.env.DATABASE_URL;
+  getHello(user: User) {
+    return user;
   }
 }
