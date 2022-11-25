@@ -21,7 +21,7 @@ WORKDIR /prisma-api
 ENV NODE_ENV=production
 
 COPY --from=BUILD_IMAGE /prisma-api/dist ./dist
-COPY ["package.json", "yarn.lock", "./"]
+COPY ["package.json", "yarn.lock", 'init-aws.js', "./"]
 
 RUN yarn install --production
 
