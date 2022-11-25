@@ -1,0 +1,47 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-west-2
+  ECR_REGISTRY: 443338647997.dkr.ecr.us-east-2.amazonaws.com
+  IMAGE_NAME: prisma-nest-api
+  IMAGE_STABLE_TAG: uat
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Pull previous Docker image
+        run: docker pull ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }} || true
+
+      - name: Build new Docker image
+        run: docker build --tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }} --cache-from ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }} .
+
+      - name: Push to ECR
+        id: ecr
+        uses: jwalton/gh-ecr-push@v1
+        with:
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: ${{ env.AWS_REGION }}
+          local-image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }}
+          image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_STABLE_TAG }}, ${{ env.IMAGE_NAME }}:${{ github.sha }}

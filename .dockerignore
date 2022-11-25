@@ -1,0 +1,12 @@
+node_modules
+.cache
+.git
+.github
+.vscode
+build
+dist
+docs
+.env*
+.idea
+README.md
+test
