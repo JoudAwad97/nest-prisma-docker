@@ -30,11 +30,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Load secrets and save to .env
+        run: aws secretsmanager get-secret-value --secret-id DATABASE_URL --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > .env
+
       - name: Pull previous Docker image
         run: docker pull ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} || true
 
       - name: Build new Docker image
-        run: docker build --tag ${{ env.IMAGE_NAME }} --cache-from ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} .
+        run: docker build --tag ${{ env.IMAGE_NAME }} --env AWS_ACCESS_KEY_ID= --env SECRET_ID= --env AWS_SECRET_ACCESS_KEY= --cache-from ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} .
 
       - name: Push to ECR
         id: ecr

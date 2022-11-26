@@ -9,6 +9,7 @@ const fs = require('fs');
  * access the keys and values stored in AWS Secrets Manager and assign them to Node env vars.
  */
 async function initAWS() {
+  console.log(process.env);
   const secretId = process.env.SECRET_ID;
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
   const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
@@ -54,7 +55,6 @@ async function initAWS() {
     console.log(`Fetching secrets from AWS Secrets Manager (${secretId}) ...`);
     const data = await client.send(command);
     secrets = JSON.parse(data.SecretString);
-    console.log(secrets);
   } catch (error) {
     console.log('Error accessing AWS Secrets Manager');
     console.error(error);

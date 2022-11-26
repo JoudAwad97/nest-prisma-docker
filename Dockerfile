@@ -25,10 +25,14 @@ COPY ["package.json", "yarn.lock","entrypoint.sh", "init-aws.js", "./"]
 
 RUN yarn install --production
 
+COPY --from=BUILD_IMAGE /prisma-api/node_modules/.prisma ./node_modules/.prisma
+
 # Schema and Migrations
 COPY prisma ./prisma
 
 EXPOSE 5000
+
+RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["/prisma-api/entrypoint.sh"]
 

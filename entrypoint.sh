@@ -4,6 +4,6 @@ set -e
 
 # Database Migration & Seeding
 node init-aws.js
-. ./.env
+# cp /.env ./dist
 yarn prisma:migrate:deploy
 "$@"
