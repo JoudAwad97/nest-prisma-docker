@@ -6,7 +6,6 @@ node_modules
 build
 dist
 docs
-.env*
 .idea
 README.md
 test
