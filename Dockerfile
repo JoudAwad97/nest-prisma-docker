@@ -25,7 +25,7 @@ COPY ["package.json", "yarn.lock","entrypoint.sh", ".env", "./"]
 
 RUN yarn install --production
 
-# COPY --from=BUILD_IMAGE /prisma-api/node_modules/.prisma ./node_modules/.prisma
+COPY --from=BUILD_IMAGE /prisma-api/node_modules/.prisma ./node_modules/.prisma
 
 # Schema and Migrations
 COPY prisma ./prisma
