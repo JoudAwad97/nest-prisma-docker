@@ -37,7 +37,7 @@ jobs:
         run: docker pull ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} || true
 
       - name: Build new Docker image
-        run: docker build --tag ${{ env.IMAGE_NAME }} --env AWS_ACCESS_KEY_ID= --env SECRET_ID= --env AWS_SECRET_ACCESS_KEY= --cache-from ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} .
+        run: docker build --tag ${{ env.IMAGE_NAME }} --cache-from ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} .
 
       - name: Push to ECR
         id: ecr
