@@ -22,7 +22,8 @@
     "docker:start": "docker-compose up -d",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev && prisma generate",
-    "deploy": "yarn && yarn prisma:migrate && yarn build"
+    "deploy": "yarn && yarn prisma:migrate && yarn build",
+    "prisma:migrate:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.216.0",

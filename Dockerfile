@@ -30,4 +30,6 @@ COPY prisma ./prisma
 
 EXPOSE 5000
 
+ENTRYPOINT ["/prisma-api/entrypoint.sh"]
+
 CMD yarn start:prod
