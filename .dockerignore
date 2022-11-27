@@ -9,3 +9,4 @@ docs
 .idea
 README.md
 test
+.env*
