@@ -32,7 +32,7 @@ COPY prisma ./prisma
 
 EXPOSE 5000
 
-RUN chmod +x entrypoint.sh
+# RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["/prisma-api/entrypoint.sh"]
 
