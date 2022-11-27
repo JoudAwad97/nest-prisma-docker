@@ -32,11 +32,11 @@ jobs:
 
       #- name: Load secrets and save to .env
       #  run: aws secretsmanager get-secret-value --secret-id DATABASE_URL --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > .env
-      #- name: Load secrets and save to .env
-      #  uses: aws-actions/aws-secretsmanager-get-secrets@v1
-      #  with:
-      #   secret-ids: DATABASE_URL
-      #   parse-json-secrets: true
+      - name: Load secrets and save to .env
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: DATABASE_URL
+          parse-json-secrets: true
 
       - name: Pull previous Docker image
         run: docker pull ${{ env.ECR_REGISTRY }}\/${{ env.IMAGE_NAME }} || true
